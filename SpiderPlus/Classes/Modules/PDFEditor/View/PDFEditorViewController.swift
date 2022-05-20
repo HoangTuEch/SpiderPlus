@@ -18,6 +18,7 @@ class PDFEditorViewController: BaseViewController {
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
         pdfEditView.frame = view.bounds
+        pdfEditView.delegate = self
         if !pdfEditView.isDescendant(of: view) {
             view.addSubview(pdfEditView)
         }
@@ -28,21 +29,14 @@ class PDFEditorViewController: BaseViewController {
         // Do any additional setup after loading the view.
         openPDFLocal()
         // fetchPDF()
-
-        DispatchQueue.global(qos: .default).asyncAfter(deadline: .now() + 60.0) { [weak self] in
-            guard let pdfData = self?.pdfEditView.document.dataRepresentation() else { return }
-
-            let documentsPath = NSSearchPathForDirectoriesInDomains(.documentDirectory,
-                                                                    .userDomainMask,
-                                                                    true)[0]
-
-            let url = URL(fileURLWithPath: "\(documentsPath)/file.pdf")
-            print("============> \(url)")
-            try? pdfData.write(to: url)
-        }
     }
 
     private func openPDFLocal() {
+        if let decoded = UserDefaults.standard.object(forKey: "annotations") as? Data {
+            let decodedTeams = try? NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(decoded) as? [PDFAnnotation]
+            print("===============> \(String(describing: decodedTeams))")
+        }
+
         if let path = Bundle.main.path(forResource: "Test", ofType: "pdf") {
             let pdfDocument = PDFDocument(url: URL(fileURLWithPath: path))
             DispatchQueue.main.async { [weak self] in
@@ -73,5 +67,13 @@ extension PDFEditorViewController: URLSessionDownloadDelegate {
         DispatchQueue.main.async { [weak self] in
             self?.pdfEditView.document = pdfDocument
         }
+    }
+}
+
+extension PDFEditorViewController: PDFEditViewDelegate {
+    func drawingEnded(_ annotations: [PDFAnnotation]) {
+        let encodeData = try? NSKeyedArchiver.archivedData(withRootObject: annotations, requiringSecureCoding: false)
+        UserDefaults.standard.set(encodeData, forKey: "annotations")
+        UserDefaults.standard.synchronize()
     }
 }

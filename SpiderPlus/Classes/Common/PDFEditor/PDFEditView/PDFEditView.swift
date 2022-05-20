@@ -8,6 +8,10 @@
 import UIKit
 import PDFKit
 
+protocol PDFEditViewDelegate: AnyObject {
+    func drawingEnded(_ annotations: [PDFAnnotation])
+}
+
 public enum DrawingTool: Int {
     case hand = 0
     case pen = 1
@@ -26,82 +30,31 @@ public class PDFEditView: UIView {
     private var colorPickerHeight: CGFloat = 300.0
     private var drawingWidthDivider: CGFloat = 50.0
 
-    private let currentTextAnnotationMinWidth: CGFloat = 150.0
+    let currentTextAnnotationMinWidth: CGFloat = 150.0
 
     private var viewInstrumentsHeight: CGFloat {
         return CGFloat(buttonViewModelArray.count) * viewInstrumentsWidth
     }
 
-    // MARK: - UIElements
-    private lazy var pdfView: PDFView = {
-        let pdfView = PDFView()
-//        pdfView.usePageViewController(true) // Disable scrolling
-        pdfView.pageBreakMargins = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
-        pdfView.autoScales = true
-        pdfView.displayDirection = .horizontal
-        pdfView.displayMode = .singlePage
-//        (pdfView.subviews.first(where: { $0 is UIScrollView }) as? UIScrollView)?.isScrollEnabled = false
-
-        NotificationCenter.default.addObserver(self, selector: #selector(handlePageChange(notification:)), name: .PDFViewPageChanged, object: nil)
-
-        currentPage = pdfView.currentPage
-//        pdfView.addGestureRecognizer(tapGestureRecognizer)
-        return pdfView
-    }()
-
-    @objc private func handlePageChange(notification: Notification) {
-        lastRemovedAnnotations = []
-
-        if let page = currentPage, let currentTextOrButtonAnnotation = currentTextOrButtonAnnotation {
-            page.removeAnnotation(currentTextOrButtonAnnotation)
-            let appearance = PDFAppearanceCharacteristics()
-            currentTextOrButtonAnnotation.setValue(appearance, forAnnotationKey: .widgetAppearanceDictionary)
-            page.addAnnotation(currentTextOrButtonAnnotation)
-        }
-        currentTextOrButtonAnnotation = nil
-        currentPage = pdfView.currentPage
-        drawingTool = .disable
-    }
-
-    private lazy var instrumentsShadowLayer: CALayer = {
-        let instrumentsShadowLayer = CALayer()
-        instrumentsShadowLayer.backgroundColor = UIColor.white.cgColor
-        instrumentsShadowLayer.shadowColor = UIColor.lightGray.cgColor
-        instrumentsShadowLayer.shadowOpacity = 0.8
-        instrumentsShadowLayer.shadowOffset = .zero
-        instrumentsShadowLayer.shadowRadius = 10
-        instrumentsShadowLayer.cornerRadius = instrumentsView.cornerRadius
-        return instrumentsShadowLayer
-    }()
-
-    private lazy var instrumentsView: InstrumentsView = {
-        let instrumentsView = InstrumentsView()
-        if let index = buttonViewModelArray.firstIndex(where: {$0.isSelected == true}) {
-            instrumentsView.tableView.selectRow(at: IndexPath(row: index, section: 0),
-                                                animated: true,
-                                                scrollPosition: .none)
-        }
-        return instrumentsView
-    }()
-
-    private lazy var drawConfigurationView: DrawConfigurationView = {
-        let drawConfigurationView = DrawConfigurationView()
-        drawConfigurationView.pickedColor = drawingColor
-        drawConfigurationView.isHidden = true
-        drawConfigurationView.delegate = self
-        drawConfigurationView.alphaSlider.value = Float(drawingAlpha)
-        drawConfigurationView.widthSlider.value = Float(drawingWidth / drawingWidthDivider)
-        return drawConfigurationView
-    }()
-
-    private lazy var colorPickerView: ColorPickerView = {
-        let colorPickerView = ColorPickerView()
-        colorPickerView.delegate = self
-        colorPickerView.isHidden = true
-        return colorPickerView
-    }()
-
     // MARK: - Stored
+    weak var delegate: PDFEditViewDelegate?
+    private(set) var drawingColor: UIColor = .red {
+        didSet {
+//            buttonViewModelArray = buttonViewModelArray.map {
+//                if $0.index == colorPick.index {
+//                    var model = $0
+//                    model.tintColor = drawingColor
+//                    return model
+//                }
+//                return $0
+//            }
+            instrumentsView.reloadData()
+        }
+    }
+    private(set) var drawingWidth: CGFloat = 2
+    private(set) var drawingFontSize: CGFloat = 12
+    private(set) var drawingAlpha: CGFloat = 1
+
     public var document: PDFDocument! {
         get {
             return pdfView.document
@@ -243,22 +196,74 @@ public class PDFEditView: UIView {
         }
     }
 
-    private(set) var drawingColor: UIColor = .red {
-        didSet {
-//            buttonViewModelArray = buttonViewModelArray.map {
-//                if $0.index == colorPick.index {
-//                    var model = $0
-//                    model.tintColor = drawingColor
-//                    return model
-//                }
-//                return $0
-//            }
-            instrumentsView.reloadData()
+    // MARK: - UIElements
+    lazy var pdfView: PDFView = {
+        let pdfView = PDFView()
+//        pdfView.usePageViewController(true) // Disable scrolling
+        pdfView.pageBreakMargins = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+        pdfView.autoScales = true
+        pdfView.displayDirection = .horizontal
+        pdfView.displayMode = .singlePage
+//        (pdfView.subviews.first(where: { $0 is UIScrollView }) as? UIScrollView)?.isScrollEnabled = false
+
+        NotificationCenter.default.addObserver(self, selector: #selector(handlePageChange(notification:)), name: .PDFViewPageChanged, object: nil)
+
+        currentPage = pdfView.currentPage
+//        pdfView.addGestureRecognizer(tapGestureRecognizer)
+        return pdfView
+    }()
+
+    @objc private func handlePageChange(notification: Notification) {
+        lastRemovedAnnotations = []
+
+        if let page = currentPage, let currentTextOrButtonAnnotation = currentTextOrButtonAnnotation {
+            page.removeAnnotation(currentTextOrButtonAnnotation)
+            let appearance = PDFAppearanceCharacteristics()
+            currentTextOrButtonAnnotation.setValue(appearance, forAnnotationKey: .widgetAppearanceDictionary)
+            page.addAnnotation(currentTextOrButtonAnnotation)
         }
+        currentTextOrButtonAnnotation = nil
+        currentPage = pdfView.currentPage
+        drawingTool = .disable
     }
-    private(set) var drawingWidth: CGFloat = 15
-    private(set) var drawingFontSize: CGFloat = 20
-    private(set) var drawingAlpha: CGFloat = 1
+
+    private lazy var instrumentsShadowLayer: CALayer = {
+        let instrumentsShadowLayer = CALayer()
+        instrumentsShadowLayer.backgroundColor = UIColor.white.cgColor
+        instrumentsShadowLayer.shadowColor = UIColor.lightGray.cgColor
+        instrumentsShadowLayer.shadowOpacity = 0.8
+        instrumentsShadowLayer.shadowOffset = .zero
+        instrumentsShadowLayer.shadowRadius = 10
+        instrumentsShadowLayer.cornerRadius = instrumentsView.cornerRadius
+        return instrumentsShadowLayer
+    }()
+
+    private lazy var instrumentsView: InstrumentsView = {
+        let instrumentsView = InstrumentsView()
+        if let index = buttonViewModelArray.firstIndex(where: {$0.isSelected == true}) {
+            instrumentsView.tableView.selectRow(at: IndexPath(row: index, section: 0),
+                                                animated: true,
+                                                scrollPosition: .none)
+        }
+        return instrumentsView
+    }()
+
+    private lazy var drawConfigurationView: DrawConfigurationView = {
+        let drawConfigurationView = DrawConfigurationView()
+        drawConfigurationView.pickedColor = drawingColor
+        drawConfigurationView.isHidden = true
+        drawConfigurationView.delegate = self
+        drawConfigurationView.alphaSlider.value = Float(drawingAlpha)
+        drawConfigurationView.widthSlider.value = Float(drawingWidth / drawingWidthDivider)
+        return drawConfigurationView
+    }()
+
+    private lazy var colorPickerView: ColorPickerView = {
+        let colorPickerView = ColorPickerView()
+        colorPickerView.delegate = self
+        colorPickerView.isHidden = true
+        return colorPickerView
+    }()
 
     // MARK: - Initialize
 
@@ -352,7 +357,6 @@ extension PDFEditView: DrawConfigurationViewDelegate {
     func didTriggerAlpha(_ alpha: CGFloat) {
         drawingAlpha = alpha
     }
-
 }
 
 // MARK: - InstrumentsViewDelegate
@@ -395,39 +399,57 @@ extension PDFEditView: InstrumentsViewDelegate {
             drawingTool = .eraser
             lastRemovedAnnotations = []
         } else if model.index == arrowLeft.index {
-            drawingTool = .disable
-            guard let page = currentPage else { return }
-            guard let last = page.annotations.last else { return }
-            lastRemovedAnnotations.append(last)
-            page.removeAnnotation(last)
+            handleActionUndo()
         } else if model.index == arrowRight.index {
-            drawingTool = .disable
-            guard let page = currentPage else { return }
-            guard let last = lastRemovedAnnotations.last else { return }
-            lastRemovedAnnotations.removeLast()
-            page.addAnnotation(last)
+            handleActionRedo()
         }/*else if model.index == colorPick.index {
             drawingTool = .disable
             drawConfigurationView.isHidden = false
             drawConfigurationView.setNeedsDisplay()
         }
          */else if model.index == trash.index {
-            guard let page = currentPage else { return }
-            for annotation in page.annotations.reversed() {
-                page.removeAnnotation(annotation)
-                lastRemovedAnnotations.append(annotation)
-            }
+            handleActionTrash()
         } else if model.index == save.index {
-            guard let pdfData = document.dataRepresentation() else { return }
-
-            let documentsPath = NSSearchPathForDirectoriesInDomains(.documentDirectory,
-                                                                    .userDomainMask,
-                                                                    true)[0]
-
-            let url = URL(fileURLWithPath: "\(documentsPath)/file.pdf")
-            print("============> \(url)")
-            try? pdfData.write(to: url)
+            handleActionSave()
         }
+    }
+}
+
+// MARK: - Handle action
+extension PDFEditView {
+    private func handleActionUndo() {
+        drawingTool = .disable
+        guard let page = currentPage else { return }
+        guard let last = page.annotations.last else { return }
+        lastRemovedAnnotations.append(last)
+        page.removeAnnotation(last)
+    }
+
+    private func handleActionRedo() {
+        drawingTool = .disable
+        guard let page = currentPage else { return }
+        guard let last = lastRemovedAnnotations.last else { return }
+        lastRemovedAnnotations.removeLast()
+        page.addAnnotation(last)
+    }
+
+    private func handleActionTrash() {
+        guard let page = currentPage else { return }
+        for annotation in page.annotations.reversed() {
+            page.removeAnnotation(annotation)
+            lastRemovedAnnotations.append(annotation)
+        }
+    }
+
+    private func handleActionSave() {
+        guard let pdfData = document.dataRepresentation() else { return }
+
+        let documentsPath = NSSearchPathForDirectoriesInDomains(.documentDirectory,
+                                                                .userDomainMask,
+                                                                true)[0]
+
+        let url = URL(fileURLWithPath: "\(documentsPath)/file.pdf")
+        try? pdfData.write(to: url)
     }
 }
 
@@ -535,6 +557,7 @@ extension PDFEditView: DrawingGestureRecognizerDelegate {
 
             currentTextOrButtonAnnotation = annotation
 
+            delegate?.drawingEnded(page.annotations)
             return
         }
 
@@ -546,6 +569,7 @@ extension PDFEditView: DrawingGestureRecognizerDelegate {
 
         if drawingTool == .pen {
             addLine(on: page, to: convertedPoint)
+            delegate?.drawingEnded(page.annotations)
             return
         }
     }
@@ -574,62 +598,6 @@ extension PDFEditView {
         page.addAnnotation(currentTextOrButtonAnnotation)
 
         sender.setTranslation(.zero, in: sender.view)
-    }
-
-}
-
-// MARK: - UIPinchGestureRecognizer
-
-extension PDFEditView {
-
-    @objc func pinch(_ sender: UIPinchGestureRecognizer) {
-        if currentTextOrButtonAnnotation == nil {
-            return
-        }
-        if sender.state == .ended || sender.numberOfTouches < 2 {
-            return
-        }
-
-        let location = sender.location(in: sender.view)
-        guard let page = pdfView.page(for: location,
-                                      nearest: true) else { return }
-
-        page.removeAnnotation(currentTextOrButtonAnnotation)
-
-        let dx = currentTextOrButtonAnnotation.bounds.width * sender.scale - currentTextOrButtonAnnotation.bounds.width
-        let dy = currentTextOrButtonAnnotation.bounds.height * sender.scale - currentTextOrButtonAnnotation.bounds.height
-
-        let width = currentTextOrButtonAnnotation.bounds.width + dx
-        let newWidth = width < currentTextAnnotationMinWidth ? currentTextAnnotationMinWidth : width
-
-        let height = currentTextOrButtonAnnotation.bounds.height + dy
-        let newHeight = height < currentTextAnnotationMinHeight ? currentTextAnnotationMinHeight : height
-
-        let touch1 = sender.location(ofTouch: 0, in: sender.view)
-        let touch2 = sender.location(ofTouch: 1, in: sender.view)
-
-        let deltaTouchX = abs( touch1.x - touch2.x )
-        let deltaTouchY = abs( touch1.y - touch2.y )
-        let ratio = deltaTouchX / deltaTouchY
-
-        let horizontal = deltaTouchY == 0 || ratio > 2
-        let vertical = deltaTouchX == 0 || ratio < 0.5
-
-        if horizontal || vertical {
-            currentTextOrButtonAnnotation.bounds = CGRect(x: currentTextOrButtonAnnotation.bounds.origin.x,
-                                                  y: currentTextOrButtonAnnotation.bounds.origin.y,
-                                                  width: horizontal ? newWidth : currentTextOrButtonAnnotation.bounds.width,
-                                                  height: vertical ? newHeight : currentTextOrButtonAnnotation.bounds.height)
-        } else {
-            currentTextOrButtonAnnotation.bounds = CGRect(x: currentTextOrButtonAnnotation.bounds.origin.x,
-                                                  y: currentTextOrButtonAnnotation.bounds.origin.y,
-                                                  width: newWidth,
-                                                  height: newHeight)
-        }
-
-        page.addAnnotation(currentTextOrButtonAnnotation)
-
-        sender.scale = 1.0
     }
 
 }
@@ -673,18 +641,15 @@ extension PDFEditView: UIGestureRecognizerDelegate {
 }
 
 // MARK: - Private
-
 extension PDFEditView {
 
     private func setupInitialState() {
-
         addSubview(pdfView)
         addSubview(instrumentsView)
         addSubview(drawConfigurationView)
         addSubview(colorPickerView)
         drawConfigurationView.translatesAutoresizingMaskIntoConstraints = false
         colorPickerView.translatesAutoresizingMaskIntoConstraints = false
-
     }
 
     private func createDrawAnnotation(page: PDFPage,
@@ -722,7 +687,7 @@ extension PDFEditView {
         border.lineWidth = 1.0
         annotation.border = border
 
-        annotation.widgetStringValue = "Text here..."
+        annotation.widgetStringValue = "Add"
 
         let appearance = PDFAppearanceCharacteristics()
         appearance.borderColor = color
