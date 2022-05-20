@@ -1,0 +1,6 @@
+framework module Pods_SpiderPlus {
+  umbrella header "Pods-SpiderPlus-umbrella.h"
+
+  export *
+  module * { export * }
+}

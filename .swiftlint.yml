@@ -1,0 +1,37 @@
+excluded:
+  - Pods
+
+disabled_rules:
+  - force_cast
+  - force_try
+  - force_unwrapping
+  - unused_setter_value
+  - block_based_kvo
+  - unused_optional_binding
+
+file_length:
+  warning: 1000
+  error: 1500
+type_body_length:
+  warning: 500
+  error: 750
+function_body_length:
+  warning: 200
+  error: 300
+line_length:
+  warning: 200
+  error: 300
+identifier_name:
+  min_length: 1
+large_tuple:
+  warning: 4
+  error: 5
+function_parameter_count:
+  warning: 15
+  error: 18
+nesting:
+  type_level:
+    warning: 2
+cyclomatic_complexity:
+  ignores_case_statements: true
+

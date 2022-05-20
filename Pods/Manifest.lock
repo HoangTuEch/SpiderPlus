@@ -1,0 +1,36 @@
+PODS:
+  - Alamofire (5.6.1)
+  - ImageViewer (6.0.0)
+  - MGSwipeTableCell (1.6.11)
+  - PKHUD (5.3.0)
+  - SwiftyJSON (5.0.1)
+  - ValueCoding (3.0.0)
+
+DEPENDENCIES:
+  - Alamofire
+  - ImageViewer
+  - MGSwipeTableCell
+  - PKHUD (~> 5.0)
+  - SwiftyJSON
+  - ValueCoding
+
+SPEC REPOS:
+  trunk:
+    - Alamofire
+    - ImageViewer
+    - MGSwipeTableCell
+    - PKHUD
+    - SwiftyJSON
+    - ValueCoding
+
+SPEC CHECKSUMS:
+  Alamofire: 87bd8c952f9a4454320fce00d9cc3de57bcadaf5
+  ImageViewer: cb88ef1c0ba19161bc10702adfdcebc116a7a59d
+  MGSwipeTableCell: b804e4e450dee439c42250be90bd50458bf67fce
+  PKHUD: 98f3e4bc904b9c916f1c5bb6d765365b5357291b
+  SwiftyJSON: 2f33a42c6fbc52764d96f13368585094bfd8aa5e
+  ValueCoding: b094fc6c260d6abad7ea0848344a6dd78a1269a4
+
+PODFILE CHECKSUM: b5878dce7484dd76a366523cc268ad354027d4c7
+
+COCOAPODS: 1.11.3
