@@ -81,6 +81,7 @@
 		C10520E22836270000CCF1BA /* PDFEditor.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C10520E12836270000CCF1BA /* PDFEditor.xcassets */; };
 		C10520ED283632BF00CCF1BA /* InstrumentsButtonViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C10520EC283632BF00CCF1BA /* InstrumentsButtonViewModel.swift */; };
 		C10520F428363C1500CCF1BA /* Test.pdf in Resources */ = {isa = PBXBuildFile; fileRef = C10520F328363C1500CCF1BA /* Test.pdf */; };
+		C1FBA26728378E00000FA397 /* PDFEditView+UIPinchGestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1FBA26628378E00000FA397 /* PDFEditView+UIPinchGestureRecognizer.swift */; };
 		D39CC37E20F04F24CFC5613A /* Pods_SpiderPlus.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B7E765D3D7B18CD7D965685A /* Pods_SpiderPlus.framework */; };
 		DAA9767A16A5DB64CE0C0556 /* Pods_SpiderPlusTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D817C2B52FE6E7ED9899AE4C /* Pods_SpiderPlusTests.framework */; };
 		DE8E2C3C4E6BFD7B07A1E24C /* Pods_SpiderPlus_SpiderPlusUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 566C410632457A5601BC7CF2 /* Pods_SpiderPlus_SpiderPlusUITests.framework */; };
@@ -188,6 +189,7 @@
 		C10520E12836270000CCF1BA /* PDFEditor.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = PDFEditor.xcassets; sourceTree = "<group>"; };
 		C10520EC283632BF00CCF1BA /* InstrumentsButtonViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstrumentsButtonViewModel.swift; sourceTree = "<group>"; };
 		C10520F328363C1500CCF1BA /* Test.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = Test.pdf; sourceTree = "<group>"; };
+		C1FBA26628378E00000FA397 /* PDFEditView+UIPinchGestureRecognizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PDFEditView+UIPinchGestureRecognizer.swift"; sourceTree = "<group>"; };
 		D817C2B52FE6E7ED9899AE4C /* Pods_SpiderPlusTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SpiderPlusTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F08A631B451F98E101F53C42 /* Pods-SpiderPlusTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SpiderPlusTests.release.xcconfig"; path = "Target Support Files/Pods-SpiderPlusTests/Pods-SpiderPlusTests.release.xcconfig"; sourceTree = "<group>"; };
 		F8966A52B23B2278F29FCBF4 /* Pods-SpiderPlus-SpiderPlusUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SpiderPlus-SpiderPlusUITests.debug.xcconfig"; path = "Target Support Files/Pods-SpiderPlus-SpiderPlusUITests/Pods-SpiderPlus-SpiderPlusUITests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -664,10 +666,8 @@
 				C10520D1283620A600CCF1BA /* DrawConfigurationView.swift */,
 				C10520D3283620FA00CCF1BA /* DrawingGestureRecognizer.swift */,
 				C10520E328362EA300CCF1BA /* IntrumentsTableView */,
-				C10520D92836219300CCF1BA /* PDFAnnotation+RemovePath.swift */,
-				C10520DB283621B800CCF1BA /* PDFEditAnnotation.swift */,
-				C10520DD283621E100CCF1BA /* PDFEditView.swift */,
-				C10520DF283622AA00CCF1BA /* PDFView+DisableSelection.swift */,
+				C1FBA269283793C7000FA397 /* PDFAnnotation */,
+				C1FBA26828379315000FA397 /* PDFEditView */,
 				C10520E12836270000CCF1BA /* PDFEditor.xcassets */,
 			);
 			path = PDFEditor;
@@ -696,6 +696,25 @@
 				C10520F328363C1500CCF1BA /* Test.pdf */,
 			);
 			path = PDFFile;
+			sourceTree = "<group>";
+		};
+		C1FBA26828379315000FA397 /* PDFEditView */ = {
+			isa = PBXGroup;
+			children = (
+				C10520DD283621E100CCF1BA /* PDFEditView.swift */,
+				C1FBA26628378E00000FA397 /* PDFEditView+UIPinchGestureRecognizer.swift */,
+				C10520DF283622AA00CCF1BA /* PDFView+DisableSelection.swift */,
+			);
+			path = PDFEditView;
+			sourceTree = "<group>";
+		};
+		C1FBA269283793C7000FA397 /* PDFAnnotation */ = {
+			isa = PBXGroup;
+			children = (
+				C10520D92836219300CCF1BA /* PDFAnnotation+RemovePath.swift */,
+				C10520DB283621B800CCF1BA /* PDFEditAnnotation.swift */,
+			);
+			path = PDFAnnotation;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -997,6 +1016,7 @@
 				C10520B02835EAD000CCF1BA /* DrawingListCell.swift in Sources */,
 				C1052037283399CC00CCF1BA /* SPBaseAlphaView.swift in Sources */,
 				C10520912835067A00CCF1BA /* BaseModel.swift in Sources */,
+				C1FBA26728378E00000FA397 /* PDFEditView+UIPinchGestureRecognizer.swift in Sources */,
 				C1052059283486E800CCF1BA /* UITextView+Extension.swift in Sources */,
 				C10520D62836212A00CCF1BA /* InstrumentsView.swift in Sources */,
 				C105207D2834CBB200CCF1BA /* Observable.swift in Sources */,
