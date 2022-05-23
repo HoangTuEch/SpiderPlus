@@ -162,7 +162,7 @@ public class PDFEditView: UIView {
         }
     }
 
-    private(set) var currentTextOrButtonAnnotation: PDFAnnotation!
+    private(set) var currentTextAnnotation: PDFAnnotation!
     private(set) var currentTextAnnotationMinHeight: CGFloat = 30.0
 
     private(set) var currentPage: PDFPage!
@@ -173,13 +173,13 @@ public class PDFEditView: UIView {
             pdfView.removeGestureRecognizer(pinchGestureRecognizer)
             pdfView.addGestureRecognizer(drawingGestureRecognizer)
 
-            if let page = currentPage, let currentTextOrButtonAnnotation = currentTextOrButtonAnnotation {
-                page.removeAnnotation(currentTextOrButtonAnnotation)
+            if let page = currentPage, let currentTextAnnotation = currentTextAnnotation {
+                page.removeAnnotation(currentTextAnnotation)
                 let appearance = PDFAppearanceCharacteristics()
-                currentTextOrButtonAnnotation.setValue(appearance, forAnnotationKey: .widgetAppearanceDictionary)
-                page.addAnnotation(currentTextOrButtonAnnotation)
+                currentTextAnnotation.setValue(appearance, forAnnotationKey: .widgetAppearanceDictionary)
+                page.addAnnotation(currentTextAnnotation)
             }
-            currentTextOrButtonAnnotation = nil
+            currentTextAnnotation = nil
 
             if drawingTool == .disable {
                 buttonViewModelArray = buttonViewModelArray.map {
@@ -216,13 +216,13 @@ public class PDFEditView: UIView {
     @objc private func handlePageChange(notification: Notification) {
         lastRemovedAnnotations = []
 
-        if let page = currentPage, let currentTextOrButtonAnnotation = currentTextOrButtonAnnotation {
-            page.removeAnnotation(currentTextOrButtonAnnotation)
+        if let page = currentPage, let currentTextAnnotation = currentTextAnnotation {
+            page.removeAnnotation(currentTextAnnotation)
             let appearance = PDFAppearanceCharacteristics()
-            currentTextOrButtonAnnotation.setValue(appearance, forAnnotationKey: .widgetAppearanceDictionary)
-            page.addAnnotation(currentTextOrButtonAnnotation)
+            currentTextAnnotation.setValue(appearance, forAnnotationKey: .widgetAppearanceDictionary)
+            page.addAnnotation(currentTextAnnotation)
         }
-        currentTextOrButtonAnnotation = nil
+        currentTextAnnotation = nil
         currentPage = pdfView.currentPage
         drawingTool = .disable
     }
@@ -516,14 +516,11 @@ extension PDFEditView: DrawingGestureRecognizerDelegate {
                                              to: page)
 
         if drawingTool == .text {
-
-            currentTextAnnotationMinHeight = drawingWidth + 8.0
-
             let annotation = createTextAnnotation(page: page,
                                                   bounds: CGRect(x: convertedPoint.x,
                                                                  y: convertedPoint.y,
                                                                  width: currentTextAnnotationMinWidth,
-                                                                 height: currentTextAnnotationMinHeight),
+                                                                 height: currentTextAnnotationMinHeight - 8.0),
                                                   color: drawingColor,
                                                   fontSize: drawingFontSize,
                                                   alpha: drawingAlpha)
@@ -534,7 +531,7 @@ extension PDFEditView: DrawingGestureRecognizerDelegate {
             pdfView.addGestureRecognizer(panGestureRecognizer)
             pdfView.addGestureRecognizer(pinchGestureRecognizer)
 
-            currentTextOrButtonAnnotation = annotation
+            currentTextAnnotation = annotation
 
             return
         }
@@ -543,8 +540,8 @@ extension PDFEditView: DrawingGestureRecognizerDelegate {
             let annotation = createButtonAnnotation(page: page,
                                                   bounds: CGRect(x: convertedPoint.x,
                                                                  y: convertedPoint.y,
-                                                                 width: 30,
-                                                                 height: 30),
+                                                                 width: 10,
+                                                                 height: 10),
                                                   color: drawingColor,
                                                   fontSize: drawingFontSize,
                                                   alpha: drawingAlpha)
@@ -555,7 +552,7 @@ extension PDFEditView: DrawingGestureRecognizerDelegate {
             pdfView.addGestureRecognizer(panGestureRecognizer)
             pdfView.addGestureRecognizer(pinchGestureRecognizer)
 
-            currentTextOrButtonAnnotation = annotation
+            currentTextAnnotation = annotation
 
             delegate?.drawingEnded(page.annotations)
             return
@@ -580,7 +577,7 @@ extension PDFEditView: DrawingGestureRecognizerDelegate {
 extension PDFEditView {
 
     @objc func pan(_ sender: UIPanGestureRecognizer) {
-        if currentTextOrButtonAnnotation == nil {
+        if currentTextAnnotation == nil {
             return
         }
         if sender.state == .ended {
@@ -593,9 +590,9 @@ extension PDFEditView {
         guard let page = pdfView.page(for: location,
                                       nearest: true) else { return }
 
-        page.removeAnnotation(currentTextOrButtonAnnotation)
-        currentTextOrButtonAnnotation.bounds = currentTextOrButtonAnnotation.bounds.offsetBy(dx: translation.x, dy: -translation.y)
-        page.addAnnotation(currentTextOrButtonAnnotation)
+        page.removeAnnotation(currentTextAnnotation)
+        currentTextAnnotation.bounds = currentTextAnnotation.bounds.offsetBy(dx: translation.x, dy: -translation.y)
+        page.addAnnotation(currentTextAnnotation)
 
         sender.setTranslation(.zero, in: sender.view)
     }
@@ -687,7 +684,7 @@ extension PDFEditView {
         border.lineWidth = 1.0
         annotation.border = border
 
-        annotation.widgetStringValue = "Add"
+        //annotation.widgetStringValue = "Add"
 
         let appearance = PDFAppearanceCharacteristics()
         appearance.borderColor = color
@@ -710,27 +707,21 @@ extension PDFEditView {
         annotation.widgetFieldType = .button
         annotation.widgetControlType = .pushButtonControl
         annotation.fieldName = "Radio Button"
-        annotation.buttonWidgetStateString = "Yes"
+        annotation.color = color
+        annotation.backgroundColor = color
 
         let border = PDFBorder()
         border.lineWidth = 1.0
         annotation.border = border
 
-        annotation.widgetStringValue = "Check"
-
-        let appearance = PDFAppearanceCharacteristics()
-        appearance.borderColor = color
-        appearance.backgroundColor = color.withAlphaComponent(0.1)
-
-        annotation.setValue(appearance, forAnnotationKey: .widgetAppearanceDictionary)
         return annotation
     }
 
     private func eraseAnnotationAtPoint(point: CGPoint,
                                         page: PDFPage) {
         for annotation in page.annotations {
-            if currentTextOrButtonAnnotation === annotation.removePath(at: point) {
-                currentTextOrButtonAnnotation = nil
+            if currentTextAnnotation === annotation.removePath(at: point) {
+                currentTextAnnotation = nil
             }
         }
     }

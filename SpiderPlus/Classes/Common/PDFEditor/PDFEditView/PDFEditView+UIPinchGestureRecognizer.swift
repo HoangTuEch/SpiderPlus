@@ -11,7 +11,7 @@ import UIKit
 extension PDFEditView {
 
     @objc func pinch(_ sender: UIPinchGestureRecognizer) {
-        if currentTextOrButtonAnnotation == nil {
+        if currentTextAnnotation == nil {
             return
         }
         if sender.state == .ended || sender.numberOfTouches < 2 {
@@ -22,15 +22,15 @@ extension PDFEditView {
         guard let page = pdfView.page(for: location,
                                       nearest: true) else { return }
 
-        page.removeAnnotation(currentTextOrButtonAnnotation)
+        page.removeAnnotation(currentTextAnnotation)
 
-        let dx = currentTextOrButtonAnnotation.bounds.width * sender.scale - currentTextOrButtonAnnotation.bounds.width
-        let dy = currentTextOrButtonAnnotation.bounds.height * sender.scale - currentTextOrButtonAnnotation.bounds.height
+        let dx = currentTextAnnotation.bounds.width * sender.scale - currentTextAnnotation.bounds.width
+        let dy = currentTextAnnotation.bounds.height * sender.scale - currentTextAnnotation.bounds.height
 
-        let width = currentTextOrButtonAnnotation.bounds.width + dx
+        let width = currentTextAnnotation.bounds.width + dx
         let newWidth = width < currentTextAnnotationMinWidth ? currentTextAnnotationMinWidth : width
 
-        let height = currentTextOrButtonAnnotation.bounds.height + dy
+        let height = currentTextAnnotation.bounds.height + dy
         let newHeight = height < currentTextAnnotationMinHeight ? currentTextAnnotationMinHeight : height
 
         let touch1 = sender.location(ofTouch: 0, in: sender.view)
@@ -44,18 +44,18 @@ extension PDFEditView {
         let vertical = deltaTouchX == 0 || ratio < 0.5
 
         if horizontal || vertical {
-            currentTextOrButtonAnnotation.bounds = CGRect(x: currentTextOrButtonAnnotation.bounds.origin.x,
-                                                  y: currentTextOrButtonAnnotation.bounds.origin.y,
-                                                  width: horizontal ? newWidth : currentTextOrButtonAnnotation.bounds.width,
-                                                  height: vertical ? newHeight : currentTextOrButtonAnnotation.bounds.height)
+            currentTextAnnotation.bounds = CGRect(x: currentTextAnnotation.bounds.origin.x,
+                                                  y: currentTextAnnotation.bounds.origin.y,
+                                                  width: horizontal ? newWidth : currentTextAnnotation.bounds.width,
+                                                  height: vertical ? newHeight : currentTextAnnotation.bounds.height)
         } else {
-            currentTextOrButtonAnnotation.bounds = CGRect(x: currentTextOrButtonAnnotation.bounds.origin.x,
-                                                  y: currentTextOrButtonAnnotation.bounds.origin.y,
+            currentTextAnnotation.bounds = CGRect(x: currentTextAnnotation.bounds.origin.x,
+                                                  y: currentTextAnnotation.bounds.origin.y,
                                                   width: newWidth,
                                                   height: newHeight)
         }
 
-        page.addAnnotation(currentTextOrButtonAnnotation)
+        page.addAnnotation(currentTextAnnotation)
 
         sender.scale = 1.0
     }
