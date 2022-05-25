@@ -4,4 +4,5 @@ ${BUILT_PRODUCTS_DIR}/ImageViewer/ImageViewer.framework
 ${BUILT_PRODUCTS_DIR}/MGSwipeTableCell/MGSwipeTableCell.framework
 ${BUILT_PRODUCTS_DIR}/PKHUD/PKHUD.framework
 ${BUILT_PRODUCTS_DIR}/SwiftyJSON/SwiftyJSON.framework
+${BUILT_PRODUCTS_DIR}/TinyConstraints/TinyConstraints.framework
 ${BUILT_PRODUCTS_DIR}/ValueCoding/ValueCoding.framework

@@ -6,6 +6,9 @@
 //
 
 import UIKit
+import TinyConstraints
+
+private var constraintsKey = 0
 
 struct Edge: OptionSet {
     let rawValue: Int
@@ -202,8 +205,34 @@ extension UIView {
 extension UIView {
     func removeAllSubviews() {
         for subview in subviews {
-            print("============> \(subview)")
             subview.removeFromSuperview()
         }
+    }
+}
+
+extension UIView {
+
+    /// 追加済みのConstraints
+    public var addedConstraints: Constraints? {
+        get {
+            return objc_getAssociatedObject(self, &constraintsKey) as? Constraints ?? nil
+        }
+        set {
+            objc_setAssociatedObject(self, &constraintsKey, newValue, .OBJC_ASSOCIATION_RETAIN)
+        }
+    }
+
+    /// 親にfitさせてaddSubView
+    public func addSubviewWithFit(_ view: UIView, usingSafeArea: Bool = false) {
+        addSubview(view)
+        addedConstraints = view.edgesToSuperview(usingSafeArea: usingSafeArea)
+    }
+
+    /// centerにaddSubView
+    ///
+    /// - Parameter view: view
+    public func addSubviewToCenter(_ view: UIView) {
+        addSubview(view)
+        addedConstraints = center(in: view)
     }
 }

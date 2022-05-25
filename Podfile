@@ -12,6 +12,7 @@ pod 'PKHUD', '~> 5.0'
 pod 'MGSwipeTableCell'
 pod 'Alamofire'
 pod 'ValueCoding'
+pod 'TinyConstraints'
 
   target 'SpiderPlusTests' do
     inherit! :search_paths

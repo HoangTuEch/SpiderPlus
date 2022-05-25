@@ -10,6 +10,11 @@ import PKHUD
 
 class BaseViewController: UIViewController {
     // MARK: - Properties
+
+    var navigator: BaseNavigator {
+        return AppDelegate.shared.navigator
+    }
+
     var viewWasMoved: Bool = false
     var activeTextField: UITextField!
 

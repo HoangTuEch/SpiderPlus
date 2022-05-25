@@ -684,7 +684,7 @@ extension PDFEditView {
         border.lineWidth = 1.0
         annotation.border = border
 
-        //annotation.widgetStringValue = "Add"
+        annotation.widgetStringValue = " Add"
 
         let appearance = PDFAppearanceCharacteristics()
         appearance.borderColor = color
