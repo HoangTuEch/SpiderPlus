@@ -309,6 +309,7 @@
 		C1051FFD283394DA00CCF1BA /* SpiderPlus */ = {
 			isa = PBXGroup;
 			children = (
+				FA4C88EF283E1F53009B64E3 /* src */,
 				C19D769C283DE7B400D13497 /* Screens */,
 				C105202E2833988E00CCF1BA /* Application */,
 				C10520302833993300CCF1BA /* Classes */,
@@ -507,8 +508,6 @@
 		C105207E2834CBEE00CCF1BA /* View */ = {
 			isa = PBXGroup;
 			children = (
-				C10520732834AF6200CCF1BA /* LoginViewController.swift */,
-				C10520742834AF6200CCF1BA /* LoginViewController.xib */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -804,6 +803,127 @@
 				C10520DB283621B800CCF1BA /* PDFEditAnnotation.swift */,
 			);
 			path = PDFAnnotation;
+			sourceTree = "<group>";
+		};
+		FA4C88EF283E1F53009B64E3 /* src */ = {
+			isa = PBXGroup;
+			children = (
+				FA4C88F9283E2071009B64E3 /* Entities */,
+				FA4C88F8283E205A009B64E3 /* Databases */,
+				FA4C88F7283E204F009B64E3 /* Utils */,
+				FA4C88F6283E203D009B64E3 /* Constants */,
+				FA4C88F3283E1FF8009B64E3 /* ViewControllers */,
+				FA4C88F2283E1F9B009B64E3 /* Components */,
+				FA4C88F1283E1F8A009B64E3 /* Services */,
+				FA4C88F0283E1F72009B64E3 /* CommonControllers */,
+			);
+			path = src;
+			sourceTree = "<group>";
+		};
+		FA4C88F0283E1F72009B64E3 /* CommonControllers */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = CommonControllers;
+			sourceTree = "<group>";
+		};
+		FA4C88F1283E1F8A009B64E3 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		FA4C88F2283E1F9B009B64E3 /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				FA4C88FD283E20B7009B64E3 /* Tableviews */,
+				FA4C88FC283E20A2009B64E3 /* Edittexts */,
+				FA4C88FB283E2098009B64E3 /* Labels */,
+				FA4C88FA283E207F009B64E3 /* Buttons */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
+		FA4C88F3283E1FF8009B64E3 /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				FA4C88F5283E201E009B64E3 /* ItemsList */,
+				FA4C88F4283E200C009B64E3 /* Authenication */,
+			);
+			path = ViewControllers;
+			sourceTree = "<group>";
+		};
+		FA4C88F4283E200C009B64E3 /* Authenication */ = {
+			isa = PBXGroup;
+			children = (
+				C10520732834AF6200CCF1BA /* LoginViewController.swift */,
+				C10520742834AF6200CCF1BA /* LoginViewController.xib */,
+			);
+			path = Authenication;
+			sourceTree = "<group>";
+		};
+		FA4C88F5283E201E009B64E3 /* ItemsList */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = ItemsList;
+			sourceTree = "<group>";
+		};
+		FA4C88F6283E203D009B64E3 /* Constants */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Constants;
+			sourceTree = "<group>";
+		};
+		FA4C88F7283E204F009B64E3 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
+		FA4C88F8283E205A009B64E3 /* Databases */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Databases;
+			sourceTree = "<group>";
+		};
+		FA4C88F9283E2071009B64E3 /* Entities */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Entities;
+			sourceTree = "<group>";
+		};
+		FA4C88FA283E207F009B64E3 /* Buttons */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Buttons;
+			sourceTree = "<group>";
+		};
+		FA4C88FB283E2098009B64E3 /* Labels */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Labels;
+			sourceTree = "<group>";
+		};
+		FA4C88FC283E20A2009B64E3 /* Edittexts */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Edittexts;
+			sourceTree = "<group>";
+		};
+		FA4C88FD283E20B7009B64E3 /* Tableviews */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Tableviews;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
