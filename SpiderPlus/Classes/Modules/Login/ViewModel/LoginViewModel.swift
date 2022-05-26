@@ -39,7 +39,7 @@ class LoginViewModel {
     }
 
     func login() {
-        SPSession.request(SPRouter.fakeData).validate().responseDecodable(of: ResponseDatas.self) { response in
+        SPSession.request(SPRouter.fakeData).validate().responseDecodable(of: [ResponseData].self) { response in
             print(response)
         }
     }
@@ -69,8 +69,6 @@ extension LoginViewModel {
         case incorrect
     }
 }
-
-typealias ResponseDatas = [ResponseData]
 
 struct ResponseData: BaseModel {
     let id: Int
