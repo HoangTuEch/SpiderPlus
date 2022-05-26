@@ -81,6 +81,7 @@
 		C10520E22836270000CCF1BA /* PDFEditor.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C10520E12836270000CCF1BA /* PDFEditor.xcassets */; };
 		C10520ED283632BF00CCF1BA /* InstrumentsButtonViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C10520EC283632BF00CCF1BA /* InstrumentsButtonViewModel.swift */; };
 		C10520F428363C1500CCF1BA /* Test.pdf in Resources */ = {isa = PBXBuildFile; fileRef = C10520F328363C1500CCF1BA /* Test.pdf */; };
+		C17E651C283F54880037F2C6 /* APIKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = C17E651B283F54880037F2C6 /* APIKey.swift */; };
 		C19D7679283DDD8500D13497 /* Navigator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C19D7678283DDD8500D13497 /* Navigator.swift */; };
 		C19D767B283DDDC200D13497 /* Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = C19D767A283DDDC200D13497 /* Location.swift */; };
 		C19D767D283DDDF400D13497 /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = C19D767C283DDDF400D13497 /* Utilities.swift */; };
@@ -208,6 +209,7 @@
 		C10520E12836270000CCF1BA /* PDFEditor.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = PDFEditor.xcassets; sourceTree = "<group>"; };
 		C10520EC283632BF00CCF1BA /* InstrumentsButtonViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstrumentsButtonViewModel.swift; sourceTree = "<group>"; };
 		C10520F328363C1500CCF1BA /* Test.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = Test.pdf; sourceTree = "<group>"; };
+		C17E651B283F54880037F2C6 /* APIKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIKey.swift; sourceTree = "<group>"; };
 		C19D7678283DDD8500D13497 /* Navigator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Navigator.swift; sourceTree = "<group>"; };
 		C19D767A283DDDC200D13497 /* Location.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Location.swift; sourceTree = "<group>"; };
 		C19D767C283DDDF400D13497 /* Utilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
@@ -343,6 +345,7 @@
 				C105206B28348AF900CCF1BA /* SPConstants.swift */,
 				C19D7698283DE64600D13497 /* SPAppStyles.swift */,
 				C19D769A283DE74D00D13497 /* AppRootViewController.swift */,
+				C17E651B283F54880037F2C6 /* APIKey.swift */,
 			);
 			path = Application;
 			sourceTree = "<group>";
@@ -1253,6 +1256,7 @@
 				C10520AA2835E2A000CCF1BA /* DrawingModel.swift in Sources */,
 				C19D76A0283DEC5100D13497 /* NSNotificationNameEx.swift in Sources */,
 				C19D768A283DE04400D13497 /* BaseNavigator.swift in Sources */,
+				C17E651C283F54880037F2C6 /* APIKey.swift in Sources */,
 				C10520ED283632BF00CCF1BA /* InstrumentsButtonViewModel.swift in Sources */,
 				C1052060283486E800CCF1BA /* UIImage+Extension.swift in Sources */,
 				C19D7697283DE45800D13497 /* UIBarButtonItemEx.swift in Sources */,

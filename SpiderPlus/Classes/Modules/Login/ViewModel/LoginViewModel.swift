@@ -39,13 +39,9 @@ class LoginViewModel {
     }
 
     func login() {
-//        loginManager.loginWithCredentials(username: username, password: password) { [weak self] (error) in
-//            guard let error = error else {
-//                return
-//            }
-//
-//            self?.errorMessage.value = error.localizedDescription
-//        }
+        SPSession.request(SPRouter.fakeData).validate().responseDecodable(of: ResponseDatas.self) { response in
+            print(response)
+        }
     }
 
     func credentialsInput() -> CredentialsInputStatus {
@@ -72,4 +68,35 @@ extension LoginViewModel {
         case correct
         case incorrect
     }
+}
+
+typealias ResponseDatas = [ResponseData]
+
+struct ResponseData: BaseModel {
+    let id: Int
+    let title: String
+    let price: Double
+    let welcomeDescription: String
+    let category: CategoryData
+    let image: String
+    let rating: Rating
+
+    enum CodingKeys: String, CodingKey {
+        case id, title, price
+        case welcomeDescription = "description"
+        case category, image, rating
+    }
+}
+
+enum CategoryData: String, Codable {
+    case electronics = "electronics"
+    case jewelery = "jewelery"
+    case menSClothing = "men's clothing"
+    case womenSClothing = "women's clothing"
+}
+
+// MARK: - Rating
+struct Rating: BaseModel {
+    let rate: Double
+    let count: Int
 }

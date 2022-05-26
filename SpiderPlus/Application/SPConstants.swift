@@ -9,6 +9,8 @@ import UIKit
 import Foundation
 
 struct SPConstants {
+    static let baseURL = "https://fakestoreapi.com/"
+
     struct TimeCountDown {
         static let secondInDay      = 24*3600
         static let secondInHour     = 3600

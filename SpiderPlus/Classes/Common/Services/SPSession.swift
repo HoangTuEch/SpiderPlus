@@ -59,7 +59,7 @@ class LoggingSessionDelegate: Alamofire.SessionDelegate {
 
     private func logResponse(_ session: Foundation.URLSession, dataTask: URLSessionDataTask, didReceiveData data: Data) {
         do {
-            let dataAsJSON = try JSONSerialization.jsonObject(with: data, options: [])
+            let dataAsJSON = try JSONSerialization.jsonObject(with: data, options: .allowFragments)
             let prettyData =  try JSONSerialization.data(withJSONObject: dataAsJSON, options: .prettyPrinted)
             if let jsonString = NSString(data: prettyData, encoding: String.Encoding.utf8.rawValue) {
                 DEBUGLog("Response: \(jsonString)")

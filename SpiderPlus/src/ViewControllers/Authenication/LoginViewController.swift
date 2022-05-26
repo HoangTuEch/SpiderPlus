@@ -37,7 +37,8 @@ class LoginViewController: BaseViewController {
 //        case .incorrect:
 //            return
 //        }
-        navigator.navigate(screen: AppScreens.mainList)
+//        navigator.navigate(screen: AppScreens.mainList)
+        login()
     }
 
     func bindData() {

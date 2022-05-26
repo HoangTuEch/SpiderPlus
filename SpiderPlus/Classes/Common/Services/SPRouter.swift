@@ -8,33 +8,41 @@
 import UIKit
 import Alamofire
 
-enum BSRouter: URLRequestConvertible {
+enum SPRouter: URLRequestConvertible {
     case login(body: Parameters?)
     case logout
+    case getList(body: Parameters?, param: Parameters?)
+    case fakeData
 
     var result: (path: String, method: HTTPMethod, body: Parameters?, params: Parameters?) {
         switch self {
         case .login(let body):
-            return ("", .post, body, nil)
+            return ("/login", .post, body, nil)
         case .logout:
-            return ("", .post, nil, nil)
+            return ("/logout", .post, nil, nil)
+        case .getList(let body, let param):
+            return ("/getlist", .post, body, param)
+        case .fakeData:
+            return ("products", .get, nil, nil)
         }
     }
 
     // MARK: URLRequestConvertible
     func asURLRequest() throws -> URLRequest {
-        let accessToken = "Access token"
+//        let accessToken = "Access token"
 
-        let url: URL =  try result.path.asURL()
+        let url: URL =  try SPConstants.baseURL.asURL()
         var urlRequest = URLRequest(url: url.appendingPathComponent(result.path))
         urlRequest.httpMethod = result.method.rawValue
 
-        urlRequest.setValue("Bearer \(accessToken)", forHTTPHeaderField: SPConstants.HeaderKey.Authorization)
+//        urlRequest.setValue("Bearer \(accessToken)", forHTTPHeaderField: SPConstants.HeaderKey.Authorization)
         urlRequest.setValue(SPConstants.HeaderKey.ApplicationJson, forHTTPHeaderField: SPConstants.HeaderKey.ContentType)
 
         // Body data
-        let bodyData = try JSONSerialization.data(withJSONObject: result.body ?? Parameters(), options: [])
-        urlRequest.httpBody = bodyData
+        if let body = result.body {
+            let bodyData = try JSONSerialization.data(withJSONObject: body, options: [])
+            urlRequest.httpBody = bodyData
+        }
 
         if let params = result.params {
             return try URLEncoding.default.encode(urlRequest, with: params)
