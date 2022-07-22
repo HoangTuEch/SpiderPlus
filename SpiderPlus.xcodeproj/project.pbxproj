@@ -311,9 +311,12 @@
 		C1051FFD283394DA00CCF1BA /* SpiderPlus */ = {
 			isa = PBXGroup;
 			children = (
-				C19D769C283DE7B400D13497 /* Screens */,
 				C105202E2833988E00CCF1BA /* Application */,
+				C19D769C283DE7B400D13497 /* ScreensConfigure */,
+				C10520852834E5A800CCF1BA /* Services */,
 				C10520302833993300CCF1BA /* Classes */,
+				C10520332833995500CCF1BA /* Resources */,
+				C10520CE28361F5F00CCF1BA /* PDFEditor */,
 				C105202F283398E200CCF1BA /* Supporting Files */,
 			);
 			path = SpiderPlus;
@@ -361,8 +364,8 @@
 		C10520302833993300CCF1BA /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				C10520342833999B00CCF1BA /* Base */,
 				C10520312833994200CCF1BA /* Modules */,
-				C10520332833995500CCF1BA /* Resources */,
 				C10520322833994B00CCF1BA /* Common */,
 			);
 			path = Classes;
@@ -386,15 +389,12 @@
 			isa = PBXGroup;
 			children = (
 				C19D7677283DDD5A00D13497 /* Compass */,
-				C10520CE28361F5F00CCF1BA /* PDFEditor */,
 				C10520B22836012C00CCF1BA /* CustomSegmentedControl */,
 				C10520972835D77600CCF1BA /* TreeTableView */,
-				C10520852834E5A800CCF1BA /* Services */,
 				C105207B2834CB7100CCF1BA /* Observable */,
 				C10520662834888500CCF1BA /* Helpers */,
 				C105203F2834869800CCF1BA /* Extensions */,
 				C105203828339C5800CCF1BA /* PhotoBrowser */,
-				C10520342833999B00CCF1BA /* Base */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -782,12 +782,12 @@
 			path = BaseRootViewController;
 			sourceTree = "<group>";
 		};
-		C19D769C283DE7B400D13497 /* Screens */ = {
+		C19D769C283DE7B400D13497 /* ScreensConfigure */ = {
 			isa = PBXGroup;
 			children = (
 				C19D769D283DE7CB00D13497 /* AppScreens.swift */,
 			);
-			path = Screens;
+			path = ScreensConfigure;
 			sourceTree = "<group>";
 		};
 		C1FBA26828379315000FA397 /* PDFEditView */ = {
